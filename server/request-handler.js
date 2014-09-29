@@ -4,7 +4,7 @@
  * You'll have to figure out a way to export this function from
  * this file and include it in basic-server.js so that it actually works.
  * *Hint* Check out the node module documenthttp://nodejs.org/api/modules.html.ation at  */
-
+var fs = require("fs");
 module.exports.handler = function(request, response) {
   /* the 'request' argument comes from nodes http module. It includes info about the
   request - such as what URL the browser is requesting. */
@@ -35,7 +35,12 @@ var handleGetRequest = function(request, response){
   var headers = defaultCorsHeaders;
   headers['Content-Type'] = "text/plain";
   response.writeHead(statusCode, headers);
-  response.end(JSON.stringify(storage));
+  var options = {encoding:'utf8'};
+
+  fs.readFile('./data.json', options, function(err,data){
+    if (err) throw err;
+    response.end(data);
+  });
 };
 
 var handlePostRequest = function(request, response){

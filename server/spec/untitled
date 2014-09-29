@@ -1,0 +1,4 @@
+var stubMsg = {
+      username: 'Jono',
+      message: 'Do my bidding!'
+    };
