@@ -5,8 +5,7 @@
  * this file and include it in basic-server.js so that it actually works.
  * *Hint* Check out the node module documenthttp://nodejs.org/api/modules.html.ation at  */
 
-var obj = {};
-var obj.handler = function(request, response) {
+module.exports.handler = function(request, response) {
   /* the 'request' argument comes from nodes http module. It includes info about the
   request - such as what URL the browser is requesting. */
 
@@ -33,11 +32,6 @@ var obj.handler = function(request, response) {
   response.end("Hello, World!");
 };
 
-obj.handleGET =
-
-obj.handlePost
-
-module.exports = obj;
 
 /* These headers will allow Cross-Origin Resource Sharing (CORS).
  * This CRUCIAL code allows this server to talk to websites that
