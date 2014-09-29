@@ -3,7 +3,7 @@
  * in basic-server.js. But it won't work as is.
  * You'll have to figure out a way to export this function from
  * this file and include it in basic-server.js so that it actually works.
- * *Hint* Check out the node module documentation at http://nodejs.org/api/modules.html. */
+ * *Hint* Check out the node module documenthttp://nodejs.org/api/modules.html.ation at  */
 
 var handleRequest = function(request, response) {
   /* the 'request' argument comes from nodes http module. It includes info about the
@@ -32,6 +32,8 @@ var handleRequest = function(request, response) {
   response.end("Hello, World!");
 };
 
+module.exports = handleRequest;
+
 /* These headers will allow Cross-Origin Resource Sharing (CORS).
  * This CRUCIAL code allows this server to talk to websites that
  * are on different domains. (Your chat client is running from a url
@@ -43,3 +45,4 @@ var defaultCorsHeaders = {
   "access-control-allow-headers": "content-type, accept",
   "access-control-max-age": 10 // Seconds.
 };
+
