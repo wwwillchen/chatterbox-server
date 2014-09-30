@@ -32,20 +32,15 @@ module.exports.handler = function(request, response) {
 
 var handleGetRequest = function(request, response){
   var statusCode = 200;
+  var res = {
+    results: []
+  };
   var headers = defaultCorsHeaders;
   headers['Content-Type'] = "text/plain";
   var options = {encoding:'utf8'};
 
-  var callback = function(err,data){
-    if (err) throw err;
-    response.writeHead(statusCode, headers);
-    response.end(data);
-  };
-
-  var data = fs.readFileSync('./data.json', options);
-  console.log(data);
-  debugger;
-  callback(null,data);
+  response.writeHead(statusCode, headers);
+  response.end(JSON.stringify(res));
 };
 
 var handlePostRequest = function(request, response){
@@ -61,12 +56,8 @@ var handlePostRequest = function(request, response){
   // storage.results.push(message);
 
   response.writeHead(statusCode, headers);
-  response.end();
 };
 
-var storage = {
-  results: []
-};
 
 /* These headers will allow Cross-Origin Resource Sharing (CORS).
  * This CRUCIAL code allows this server to talk to websites that
