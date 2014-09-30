@@ -5,6 +5,7 @@
  * this file and include it in basic-server.js so that it actually works.
  * *Hint* Check out the node module documenthttp://nodejs.org/api/modules.html.ation at  */
 var fs = require("fs");
+
 module.exports.handler = function(request, response) {
   /* the 'request' argument comes from nodes http module. It includes info about the
   request - such as what URL the browser is requesting. */
@@ -44,11 +45,12 @@ module.exports.handler = function(request, response) {
    * up in the browser.*/
 };
 
+var options = {encoding:'utf8'};
+
 var handleGetRequest = function(request, response){
   var statusCode = 200;
   var headers = defaultCorsHeaders;
   headers['Content-Type'] = "application/json";
-  var options = {encoding:'utf8'};
 
   response.writeHead(statusCode, headers);
   response.end(JSON.stringify(storage));
@@ -59,15 +61,35 @@ var handlePostRequest = function(request, response){
   var headers = defaultCorsHeaders;
   headers['Content-Type'] = "application/json";
 
-  var data = '';
+  var receivedMessage = '';
   request.on('data', function(chunk){
-    data += chunk;
+    receivedMessage += chunk;
   });
+
   request.on('end', function(){
-    storage.results.push(JSON.parse(data));
+    fs.readFile(__dirname + '/data.json', options, function(err, data) {
+      if (err) throw err;
+
+      /*
+        1. Read file async
+          2. Parse the file into JSON object and assign it to a variable
+          3. Insert a new message into JSON object
+          4. Write to the file async
+            5. Write headers and call end()
+      */
+
+      debugger;
+      res = data || '{}';
+      var res = JSON.parse(res);
+      res.results = res.results || [];
+      res.results.push(JSON.parse(receivedMessage));
+      console.log(res);
+    });
+
     response.writeHead(statusCode, headers);
     response.end();
   });
+
 };
 
 var storage = {
