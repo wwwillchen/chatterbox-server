@@ -6,7 +6,7 @@
  * *Hint* Check out the node module documenthttp://nodejs.org/api/modules.html.ation at  */
 var fs = require("fs");
 
-module.exports.handler = function(request, response, callback) {
+module.exports.handler = function(request, response) {
   /* the 'request' argument comes from nodes http module. It includes info about the
   request - such as what URL the browser is requesting. */
 
@@ -16,7 +16,7 @@ module.exports.handler = function(request, response, callback) {
     response.writeHead(204, defaultCorsHeaders);
     response.end();
   } else if (request.method === 'GET') {
-    handleGetRequest(request, response, callback);
+    handleGetRequest(request, response);
   } else if (request.method === 'POST') {
     handlePostRequest(request, response);
   }
@@ -38,7 +38,7 @@ module.exports.handler = function(request, response, callback) {
 
 var options = {encoding:'utf8'};
 
-var handleGetRequest = function(request, response, callback){
+var handleGetRequest = function(request, response){
   var statusCode = 200;
   var headers = defaultCorsHeaders;
   headers['Content-Type'] = "application/json";
@@ -52,8 +52,6 @@ var handleGetRequest = function(request, response, callback){
 
     response.writeHead(statusCode, headers);
     response.end(JSON.stringify(res));
-    console.log('callback', callback);
-    callback();
   });
 };
 
