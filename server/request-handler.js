@@ -6,7 +6,7 @@
  * *Hint* Check out the node module documenthttp://nodejs.org/api/modules.html.ation at  */
 var fs = require("fs");
 
-module.exports.handler = function(request, response) {
+module.exports.handler = function(request, response, callback) {
   /* the 'request' argument comes from nodes http module. It includes info about the
   request - such as what URL the browser is requesting. */
   console.log('request.method=', request.method);
@@ -28,6 +28,10 @@ module.exports.handler = function(request, response) {
   } else if (request.method === 'POST') {
     // POST URL: url /1/classes/chatterbox/
     handlePostRequest(request,response);
+  }
+
+  if (callback) {
+    callback();
   }
 
   /* Documentation for both request and response can be found at
@@ -58,9 +62,7 @@ var handleGetRequest = function(request, response){
     res = data || '{}';
     var res = JSON.parse(res);
     res.results = res.results || [];
-    console.log('res', res);
 
-    debugger;
     response.writeHead(statusCode, headers);
     console.log('response', response);
     response.end(JSON.stringify(res));
