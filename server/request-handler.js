@@ -78,16 +78,20 @@ var handlePostRequest = function(request, response){
             5. Write headers and call end()
       */
 
-      debugger;
       res = data || '{}';
       var res = JSON.parse(res);
       res.results = res.results || [];
       res.results.push(JSON.parse(receivedMessage));
       console.log(res);
+
+      fs.writeFile(__dirname + '/data.json', JSON.stringify(res), options, function(err) {
+        if (err) throw err;
+
+        response.writeHead(statusCode, headers);
+        response.end();
+      });
     });
 
-    response.writeHead(statusCode, headers);
-    response.end();
   });
 
 };
