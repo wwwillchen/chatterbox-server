@@ -10,13 +10,22 @@ module.exports.handler = function(request, response) {
   request - such as what URL the browser is requesting. */
   console.log('request.method=', request.method);
   console.log("Serving request type " + request.method + " for url " + request.url);
+
+  if (request.url.indexOf('/classes') === -1) {
+    response.writeHead(404);
+    response.end();
+    return;
+  }
+
   if (request.method === 'OPTIONS') {
     //console.log(defaultCorsHeaders);
     response.writeHead(204, defaultCorsHeaders);
     response.end();
   } else if (request.method === 'GET') {
+    // GET URL: /1/classes/chatterbox/?order=-createdAt
     handleGetRequest(request,response);
   } else if (request.method === 'POST') {
+    // POST URL: url /1/classes/chatterbox/
     handlePostRequest(request,response);
   }
 
