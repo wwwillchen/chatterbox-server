@@ -38,7 +38,7 @@ module.exports.handler = function(request, response) {
 var handleGetRequest = function(request, response){
   var statusCode = 200;
   var headers = defaultCorsHeaders;
-  headers['Content-Type'] = "text/plain";
+  headers['Content-Type'] = "application/json";
   var options = {encoding:'utf8'};
 
   response.writeHead(statusCode, headers);
@@ -48,7 +48,7 @@ var handleGetRequest = function(request, response){
 var handlePostRequest = function(request, response){
   var statusCode = 201;
   var headers = defaultCorsHeaders;
-  headers['Content-Type'] = "text/plain";
+  headers['Content-Type'] = "application/json";
 
   var data = '';
   request.on('data', function(chunk){
