@@ -12,19 +12,13 @@ module.exports.handler = function(request, response, callback) {
 
   console.log("Serving request type " + request.method + " for url " + request.url);
 
-  if (request.url.indexOf('/classes') === -1) {
-    response.writeHead(404);
-    response.end();
-    return;
-  }
-
   if (request.method === 'OPTIONS') {
     response.writeHead(204, defaultCorsHeaders);
     response.end();
   } else if (request.method === 'GET') {
-    handleGetRequest(request,response);
+    handleGetRequest(request, response, callback);
   } else if (request.method === 'POST') {
-    handlePostRequest(request,response);
+    handlePostRequest(request, response);
   }
 
   /* Documentation for both request and response can be found at
@@ -44,7 +38,7 @@ module.exports.handler = function(request, response, callback) {
 
 var options = {encoding:'utf8'};
 
-var handleGetRequest = function(request, response){
+var handleGetRequest = function(request, response, callback){
   var statusCode = 200;
   var headers = defaultCorsHeaders;
   headers['Content-Type'] = "application/json";
@@ -58,6 +52,8 @@ var handleGetRequest = function(request, response){
 
     response.writeHead(statusCode, headers);
     response.end(JSON.stringify(res));
+    console.log('callback', callback);
+    callback();
   });
 };
 
