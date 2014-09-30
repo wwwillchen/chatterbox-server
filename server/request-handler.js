@@ -34,13 +34,18 @@ var handleGetRequest = function(request, response){
   var statusCode = 200;
   var headers = defaultCorsHeaders;
   headers['Content-Type'] = "text/plain";
-  response.writeHead(statusCode, headers);
   var options = {encoding:'utf8'};
 
-  fs.readFile('./data.json', options, function(err,data){
+  var callback = function(err,data){
     if (err) throw err;
+    response.writeHead(statusCode, headers);
     response.end(data);
-  });
+  };
+
+  var data = fs.readFileSync('./data.json', options);
+  console.log(data);
+  debugger;
+  callback(null,data);
 };
 
 var handlePostRequest = function(request, response){
@@ -48,12 +53,12 @@ var handlePostRequest = function(request, response){
   var headers = defaultCorsHeaders;
   headers['Content-Type'] = "text/plain";
 
-  var message = {
-    username: request._postData.username,
-    message: request._postData.message
-  };
+  // var message = {
+  //   username: request._postData.username,
+  //   message: request._postData.message
+  // };
 
-  storage.results.push(message);
+  // storage.results.push(message);
 
   response.writeHead(statusCode, headers);
   response.end();
