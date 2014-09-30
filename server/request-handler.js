@@ -8,15 +8,20 @@ var fs = require("fs");
 module.exports.handler = function(request, response) {
   /* the 'request' argument comes from nodes http module. It includes info about the
   request - such as what URL the browser is requesting. */
+  console.log('request.method=', request.method);
   console.log("Serving request type " + request.method + " for url " + request.url);
-
-  /* Documentation for both request and response can be found at
-   * http://nodemanual.org/0.8.14/nodejs_ref_guide/http.html */
-  if (request.method === 'GET') {
+  if (request.method === 'OPTIONS') {
+    //console.log(defaultCorsHeaders);
+    response.writeHead(204, defaultCorsHeaders);
+    response.end();
+  } else if (request.method === 'GET') {
     handleGetRequest(request,response);
   } else if (request.method === 'POST') {
     handlePostRequest(request,response);
   }
+
+  /* Documentation for both request and response can be found at
+   * http://nodemanual.org/0.8.14/nodejs_ref_guide/http.html */
 
 
   /* Without this line, this server wouldn't work. See the note
