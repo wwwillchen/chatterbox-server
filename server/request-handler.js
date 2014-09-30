@@ -9,7 +9,7 @@ var fs = require("fs");
 module.exports.handler = function(request, response, callback) {
   /* the 'request' argument comes from nodes http module. It includes info about the
   request - such as what URL the browser is requesting. */
-  console.log('request.method=', request.method);
+
   console.log("Serving request type " + request.method + " for url " + request.url);
 
   if (request.url.indexOf('/classes') === -1) {
@@ -19,19 +19,12 @@ module.exports.handler = function(request, response, callback) {
   }
 
   if (request.method === 'OPTIONS') {
-    //console.log(defaultCorsHeaders);
     response.writeHead(204, defaultCorsHeaders);
     response.end();
   } else if (request.method === 'GET') {
-    // GET URL: /1/classes/chatterbox/?order=-createdAt
     handleGetRequest(request,response);
   } else if (request.method === 'POST') {
-    // POST URL: url /1/classes/chatterbox/
     handlePostRequest(request,response);
-  }
-
-  if (callback) {
-    callback();
   }
 
   /* Documentation for both request and response can be found at
@@ -64,7 +57,6 @@ var handleGetRequest = function(request, response){
     res.results = res.results || [];
 
     response.writeHead(statusCode, headers);
-    console.log('response', response);
     response.end(JSON.stringify(res));
   });
 };
@@ -87,7 +79,6 @@ var handlePostRequest = function(request, response){
       var res = JSON.parse(res);
       res.results = res.results || [];
       res.results.push(JSON.parse(receivedMessage));
-      console.log(res);
 
       fs.writeFile(__dirname + '/data.json', JSON.stringify(res), options, function(err) {
         if (err) throw err;
@@ -97,10 +88,6 @@ var handlePostRequest = function(request, response){
       });
     });
   });
-};
-
-var storage = {
-  results: []
 };
 
 /* These headers will allow Cross-Origin Resource Sharing (CORS).
