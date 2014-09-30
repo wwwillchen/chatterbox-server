@@ -22,10 +22,9 @@ var server = http.createServer(function(request, response) {
   var pathname = url.parse(request.url).pathname;
   var handler = routes[pathname];
 
-  //debugger;
   console.log('pathname', pathname);
   if (!handler) {
-    handleError();
+    handleError(request, response);
   } else {
     handler(request, response);
   }
@@ -34,7 +33,7 @@ var server = http.createServer(function(request, response) {
 console.log("Listening on http://" + ip + ":" + port);
 server.listen(port, ip);
 
-var handleError = function() {
+var handleError = function(request, response) {
   response.writeHead(404);
   response.end();
 };
