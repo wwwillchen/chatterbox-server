@@ -52,8 +52,19 @@ var handleGetRequest = function(request, response){
   var headers = defaultCorsHeaders;
   headers['Content-Type'] = "application/json";
 
-  response.writeHead(statusCode, headers);
-  response.end(JSON.stringify(storage));
+  fs.readFile(__dirname + '/data.json', options, function(err, data) {
+    if (err) throw err;
+
+    res = data || '{}';
+    var res = JSON.parse(res);
+    res.results = res.results || [];
+    console.log('res', res);
+
+    debugger;
+    response.writeHead(statusCode, headers);
+    console.log('response', response);
+    response.end(JSON.stringify(res));
+  });
 };
 
 var handlePostRequest = function(request, response){
@@ -70,14 +81,6 @@ var handlePostRequest = function(request, response){
     fs.readFile(__dirname + '/data.json', options, function(err, data) {
       if (err) throw err;
 
-      /*
-        1. Read file async
-          2. Parse the file into JSON object and assign it to a variable
-          3. Insert a new message into JSON object
-          4. Write to the file async
-            5. Write headers and call end()
-      */
-
       res = data || '{}';
       var res = JSON.parse(res);
       res.results = res.results || [];
@@ -91,9 +94,7 @@ var handlePostRequest = function(request, response){
         response.end();
       });
     });
-
   });
-
 };
 
 var storage = {
