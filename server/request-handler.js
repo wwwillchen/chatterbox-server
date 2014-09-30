@@ -32,15 +32,12 @@ module.exports.handler = function(request, response) {
 
 var handleGetRequest = function(request, response){
   var statusCode = 200;
-  var res = {
-    results: []
-  };
   var headers = defaultCorsHeaders;
   headers['Content-Type'] = "text/plain";
   var options = {encoding:'utf8'};
 
   response.writeHead(statusCode, headers);
-  response.end(JSON.stringify(res));
+  response.end(JSON.stringify(storage));
 };
 
 var handlePostRequest = function(request, response){
@@ -48,16 +45,20 @@ var handlePostRequest = function(request, response){
   var headers = defaultCorsHeaders;
   headers['Content-Type'] = "text/plain";
 
-  // var message = {
-  //   username: request._postData.username,
-  //   message: request._postData.message
-  // };
-
-  // storage.results.push(message);
-
-  response.writeHead(statusCode, headers);
+  var data = '';
+  request.on('data', function(chunk){
+    data += chunk;
+  });
+  request.on('end', function(){
+    storage.results.push(JSON.parse(data));
+    response.writeHead(statusCode, headers);
+    response.end();
+  });
 };
 
+var storage = {
+  results: []
+};
 
 /* These headers will allow Cross-Origin Resource Sharing (CORS).
  * This CRUCIAL code allows this server to talk to websites that
