@@ -8,8 +8,8 @@
     "test": "mocha server/spec"
   },
   "devDependencies": {
-    "mocha": "^1.21.4",
+    "mocha": "^3.3.0",
     "request": "^2.34.0",
-    "chai": "^1.9.0"
+    "chai": "^3.5.0"
   }
 }
